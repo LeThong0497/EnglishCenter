@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using EnglishCenter.Common.Models.QuestionResultDetail;
+using System.Collections.Generic;
 
 namespace EnglishCenter.Common.Models.Result
 {
@@ -7,6 +8,6 @@ namespace EnglishCenter.Common.Models.Result
         public int AccountId { get; set; }
         public int TestId { get; set; }
         public int Score { get; set; }
-        public List<string> Answers { get; set; }
+        public List<QuestionRD> Answers { get; set; }
     }
 }

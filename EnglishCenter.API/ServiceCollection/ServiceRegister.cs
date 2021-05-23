@@ -1,3 +1,4 @@
+using EnglisCenter.Business.Services;
 using EnglishCenter.Business.Interfaces;
 using EnglishCenter.Business.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +17,7 @@ namespace Backend.Extensions.ServiceCollection
             services.AddTransient<IResultDetailService, ResultDetailService>();
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<ITestService, TestService>();
+
         }
     }
 }

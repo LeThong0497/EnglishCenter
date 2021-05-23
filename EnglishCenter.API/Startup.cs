@@ -1,9 +1,14 @@
 using Backend.Extensions.ServiceCollection;
+using EnglisCenter.Business.Services;
+using EnglishCenter.Business.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace EnglishCenter.API
 {
@@ -26,6 +31,27 @@ namespace EnglishCenter.API
             services.AddHttpContextAccessor();
             services.AddServices();
             services.AddSwagger();
+
+            services.AddSwaggerGen();
+
+            var key = "this is my custom Secret key for authnetication";
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey=new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
+                    ValidateIssuer=false,
+                    ValidateAudience=false
+                };
+            });
+            services.AddSingleton<IJwtAuthenticationManage>(new JwtAuthenticationManage(key));
 
 
             services.AddCors(options =>
@@ -54,6 +80,7 @@ namespace EnglishCenter.API
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseSwagger();

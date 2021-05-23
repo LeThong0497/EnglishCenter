@@ -31,5 +31,7 @@ namespace EnglishCenter.Business.Interfaces
         Task<Test> UpdateTest(int id, TestEditRequest testRequest);
 
         Task SubmitTest(ResultRequest resultRequest);
+
+        Task<bool> IsDoing(int testId, int accountId);
     }
 }

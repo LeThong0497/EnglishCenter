@@ -11,5 +11,7 @@ namespace EnglisCenter.Accessor.Entities
 
         public string SelectedAns { get; set; }
 
+        public bool Ok { get; set; }
+
     }
 }

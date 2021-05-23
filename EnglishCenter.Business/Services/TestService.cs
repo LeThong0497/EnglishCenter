@@ -22,6 +22,7 @@ namespace EnglishCenter.Business.Services
         private readonly IResultDetailService _resultDetailService;
         private readonly IResultService _resultService;
 
+
         public TestService(IBaseRepository<Test> baseRepository, IQuestionService questionService,
                              ITestDetailService testDetailService, IAccountService accountService,
                              IBaseRepository<Result> baseRepositoryR, IResultDetailService resultDetailService,
@@ -293,13 +294,27 @@ namespace EnglishCenter.Business.Services
                 var detailResult = new ResultDetailRequest
                 {
                     ResultId = resultNew.ResultId,
-                    SelectedAns = resultRequest.Answers[i]
+                    SelectedAns = resultRequest.Answers[i].Answer,
+                    QuestionId= resultRequest.Answers[i].QuestionId,
+                    Ok= resultRequest.Answers[i].Ok
                 };
                 list.Add(detailResult);
             }
 
             await _resultDetailService.AddRange(list);
 
+        }
+
+        public async Task<bool> IsDoing(int testId, int accountId)
+        {
+            var result = await _baseRepositoryR.Entities
+                        .Where(x => x.AccountId.Equals(accountId) && x.TestId.Equals(testId))
+                        .FirstOrDefaultAsync();
+
+            if (result == null)
+                return false;
+
+            return true;
         }
 
         private async Task<List<TestResponse>> GetListTestDetail(List<Test> lists)
@@ -342,6 +357,6 @@ namespace EnglishCenter.Business.Services
             }
 
             return listDetailTests;
-        }
+        }       
     }
 }

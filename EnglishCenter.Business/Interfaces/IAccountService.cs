@@ -13,6 +13,6 @@ namespace EnglishCenter.Business.Interfaces
 
         Task<IEnumerable<Account>> GetAll();
 
-        Task<Account> Update(int id, AccountEditRequest accountEditRequest);
+        Task<Account> Update(AccountEditRequest accountEditRequest);
     }
 }

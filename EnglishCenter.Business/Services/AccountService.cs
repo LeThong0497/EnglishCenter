@@ -1,6 +1,7 @@
 ﻿using EnglisCenter.Accessor.Entities;
 using EnglishCenter.Business.Interfaces;
 using EnglishCenter.Common.Models.Account;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,9 +84,11 @@ namespace EnglishCenter.Business.Services
             return await _baseRepository.GetById(id);
         }
 
-        public async Task<Account> Update(int id, AccountEditRequest accountEditRequest)
+        public async Task<Account> Update(AccountEditRequest accountEditRequest)
         {
-            var acc = await _baseRepository.GetById(id);
+            var acc = await _baseRepository.Entities
+                .Where(x => x.Email.Equals(accountEditRequest.Email))
+                .FirstOrDefaultAsync();
 
             if (acc == null)
                 return null;
@@ -100,5 +103,6 @@ namespace EnglishCenter.Business.Services
 
             return await _baseRepository.Update(acc);
         }
+       
     }
 }
