@@ -14,5 +14,9 @@ namespace EnglishCenter.Business.Interfaces
         Task<IEnumerable<Account>> GetAll();
 
         Task<Account> Update(AccountEditRequest accountEditRequest);
+
+        Task<bool> ForgetPassWord(string email);
+
+        Task<bool> ChangePassword(int id,AccountChangePassword account);
     }
 }

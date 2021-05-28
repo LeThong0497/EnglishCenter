@@ -24,7 +24,9 @@ namespace EnglishCenter.Business.Services
                 var detailResult = new DetailResult
                 {
                     ResultId = resultDetailRequests[i].ResultId,
-                    SelectedAns = resultDetailRequests[i].SelectedAns
+                    SelectedAns = resultDetailRequests[i].SelectedAns,
+                    QuestionId= resultDetailRequests[i].QuestionId,
+                    Ok= resultDetailRequests[i].Ok
                 };
 
                 list.Add(detailResult);

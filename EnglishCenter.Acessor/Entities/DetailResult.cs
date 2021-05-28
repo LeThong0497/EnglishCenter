@@ -9,6 +9,7 @@ namespace EnglisCenter.Accessor.Entities
 
         public int ResultId { get; set; }
 
+        public int QuestionId { get; set; }
         public string SelectedAns { get; set; }
 
         public bool Ok { get; set; }

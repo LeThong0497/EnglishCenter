@@ -109,7 +109,7 @@ namespace EnglisCenter.API.Controllers
         public async  Task<IActionResult> SubmitTest(ResultRequest submitResultTest)
         {
             await  _testService.SubmitTest(submitResultTest);
-            return Ok();
+            return Content("Success");
         }
 
         [HttpGet("isDoing")]
@@ -118,9 +118,9 @@ namespace EnglisCenter.API.Controllers
             var result = await _testService.IsDoing(testId, accId);
 
             if (result == false)
-                return Content("This test has not done yet!");
+                return Content("NotDone");
             else
-                return Content("This test was done!");
+                return Content("Done");
         }
     }
 }

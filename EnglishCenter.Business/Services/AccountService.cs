@@ -41,19 +41,29 @@ namespace EnglishCenter.Business.Services
             var passWord = new String(stringChars);
             //Gửi mail mật khẩu
             SmtpClient smtp = new SmtpClient
-            {
+            {  
+                UseDefaultCredentials=false,
                 Host = "smtp.gmail.com",
                 Port = 587,
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
-                Credentials = new System.Net.NetworkCredential("lethongLT0497@gmail.com", "lethongLT@0497"),
+                Credentials = new System.Net.NetworkCredential("thongle0497@gmail.com", "lethongLT@0497#!"),
                 Timeout = 5000,
             };
-            MailMessage msg = new MailMessage("lethongLT0497@gmail.com", accountRequest.Email.ToString().Trim(),
+            MailMessage msg = new MailMessage("thongle0497@gmail.com", accountRequest.Email.ToString().Trim(),
                 "Trung tâm AL - Cấp mật khẩu",
                 "Cảm ơn đã đăng ký thi tại trung tâm AL. Mật khẩu của bạn là: " + passWord + "\nChú ý: tên đăng nhập chính là email của bạn.\n Chúc bạn đạt kết quả tốt!");
             msg.IsBodyHtml = true;
-            smtp.Send(msg);
+
+            try
+            {
+                smtp.Send(msg);
+            }
+            catch(Exception e)
+            {
+                throw new Exception("Error"+e);
+            }
+            
 
             //Update mật khẩu vào db          
             var acc = new Account
@@ -92,8 +102,7 @@ namespace EnglishCenter.Business.Services
 
             if (acc == null)
                 return null;
-
-            acc.PassWord = accountEditRequest.PassWord;
+          
             acc.FullName = accountEditRequest.FullName;
             acc.DateOfBirth = accountEditRequest.DateOfBirth;
             acc.PhoneNumber = accountEditRequest.PhoneNumber;
@@ -104,5 +113,56 @@ namespace EnglishCenter.Business.Services
             return await _baseRepository.Update(acc);
         }
        
+        public async Task<bool> ForgetPassWord(string email)
+        {
+            var acc =await _baseRepository.Entities.Where(x => x.Email.Equals(email)).FirstOrDefaultAsync();
+
+            if (acc == null)
+                return false;
+
+            SmtpClient smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                Credentials = new System.Net.NetworkCredential("thongle0497@gmail.com", "lethongLT@0497#!"),
+                Timeout = 5000,
+            };
+            MailMessage msg = new MailMessage("thongle0497@gmail.com", acc.Email.ToString().Trim(),
+                "Trung tâm AL - Cấp mật khẩu",
+                "Mật khẩu của bạn là: " + acc.PassWord.ToString() + "\n Chúc bạn đạt kết quả tốt!");
+            msg.IsBodyHtml = true;
+
+            try
+            {
+                smtp.Send(msg);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error" + e);
+            }
+
+            return true;
+        }
+
+        public async Task<bool> ChangePassword(int id,AccountChangePassword account )
+        {
+            var acc =await _baseRepository.GetById(id);
+
+            if (acc == null)
+                throw new Exception("Not Found");
+
+            if(!acc.PassWord.Equals(account.OldPassWord))
+            {
+                return false;
+            }
+
+            acc.PassWord = account.NewPassWord;
+
+            await  _baseRepository.Update(acc);
+
+            return true;
+        }
     }
 }

@@ -23,14 +23,21 @@ namespace EnglisCenter.API.Controllers
             _jwtAuthenticationManage = jwtAuthenticationManage;
         }
 
-        [HttpPost]
+        [HttpPost()]
         public async Task<ActionResult<Account>> SignUp(AccountRequest account)
         {
-            var acc = await _accountService.Add(account);
-            return Ok(acc);
+            try
+            {
+                await _accountService.Add(account);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return Content("Success");
         }
 
-        [HttpPost("authenticate")]
+       /* [HttpPost("authenticate")]
         public async Task<IActionResult> Login([FromBody] UserLogin userLogin)
         {
             if(!(await _accountService.GetAll()).Any(x=>x.Email.Equals(userLogin.Email) && x.PassWord.Equals(userLogin.PassWord)))
@@ -44,15 +51,15 @@ namespace EnglisCenter.API.Controllers
             if (token == null)
                 return Unauthorized();
             return Ok(token);
-        }
+        }*/
+
+        [HttpPost("login")]
         
-        /*[HttpPost("info")]
-        [Authorize]
         public async Task<ActionResult<AccountResponse>> GetInfAcc([FromBody] UserLogin userLogin)
         {
             if (!(await _accountService.GetAll()).Any(x => x.Email.Equals(userLogin.Email) && x.PassWord.Equals(userLogin.PassWord)))
             {
-                throw new Exception("Email or PassWord is incorrect");
+                return Content("Email or password incorrect!");
             }
 
             var acc = (await _accountService.GetAll()).Where(x => x.Email.Equals(userLogin.Email))
@@ -71,7 +78,8 @@ namespace EnglisCenter.API.Controllers
                 RoleId = acc.RoleId
             };
             return Ok(accresponse);
-        }*/
+        }
+
         [HttpGet]       
         public async Task<ActionResult<IEnumerable<Account>>> GetAll()
         {
@@ -88,6 +96,27 @@ namespace EnglisCenter.API.Controllers
                 return StatusCode(200);
             else
                 throw new Exception("Update failed");
+        }
+
+        [HttpGet("getpassword")] 
+        public async Task<ActionResult> ForgetPassword(string email)
+        {
+            var result =await _accountService.ForgetPassWord(email);
+
+            if (result == false)
+                return Content("Email not found");
+            return Content("Success");
+
+        }
+
+        [HttpPut("changepw/{accid}")]
+        public async Task<ActionResult> ChangePassword([FromRoute] int accid, AccountChangePassword account)
+        {
+            var result = await _accountService.ChangePassword(accid, account);
+
+            if (result)
+                return Ok("Success");
+            return Content("WrongPassword");
         }
     }
 }

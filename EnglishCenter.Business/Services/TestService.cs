@@ -274,10 +274,10 @@ namespace EnglishCenter.Business.Services
 
             if (test == null)
             {
-                test.State = false;
-                await _baseRepository.Update(test);
+                throw new Exception("Can not find this test!");
             }
-
+               
+                
             var result = new Result
             {
                 AccountId = resultRequest.AccountId,

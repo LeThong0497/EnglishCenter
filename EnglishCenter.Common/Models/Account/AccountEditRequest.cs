@@ -4,8 +4,7 @@ namespace EnglishCenter.Common.Models.Account
 {
     public  class AccountEditRequest
     {
-        public string Email { get; set; }
-        public string PassWord { get; set; }
+        public string Email { get; set; }      
         public string FullName { get; set; }
         public DateTime DateOfBirth { get; set; }
         public int PhoneNumber { get; set; }
