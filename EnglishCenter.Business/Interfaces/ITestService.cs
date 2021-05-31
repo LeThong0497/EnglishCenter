@@ -1,4 +1,4 @@
-﻿using EnglisCenter.Accessor.Entities;
+﻿using EnglishCenter.Accessor.Entities;
 using EnglishCenter.Common.Models.Result;
 using EnglishCenter.Common.Models.Test;
 using System.Collections.Generic;
@@ -33,5 +33,9 @@ namespace EnglishCenter.Business.Interfaces
         Task SubmitTest(ResultRequest resultRequest);
 
         Task<bool> IsDoing(int testId, int accountId);
+
+        Task<bool> ChangeState();
+
+        Task<Test> CloseTest(int id);
     }
 }

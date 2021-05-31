@@ -1,4 +1,4 @@
-﻿using EnglisCenter.Accessor.Entities;
+﻿using EnglishCenter.Accessor.Entities;
 using EnglishCenter.Business.Interfaces;
 using EnglishCenter.Common.Models.Account;
 using EnglishCenter.Common.Models.User;
@@ -32,7 +32,7 @@ namespace EnglisCenter.API.Controllers
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                return Content(e.Message);
             }
             return Content("Success");
         }
@@ -117,6 +117,17 @@ namespace EnglisCenter.API.Controllers
             if (result)
                 return Ok("Success");
             return Content("WrongPassword");
+        }
+
+        [HttpGet("course/{id}")]
+        public async Task<ActionResult<IEnumerable<Account>>> GetAccountByCourse([FromRoute]int id)
+        {
+            var list = await _accountService.GetAccountByCourse(id);
+
+            if (list == null)
+                return StatusCode(404);
+
+            return Ok(list);
         }
     }
 }

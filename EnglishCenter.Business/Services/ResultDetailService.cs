@@ -1,4 +1,4 @@
-﻿using EnglisCenter.Accessor.Entities;
+﻿using EnglishCenter.Accessor.Entities;
 using EnglishCenter.Business.Interfaces;
 using EnglishCenter.Common.Models.ResultDetail;
 using System.Collections.Generic;

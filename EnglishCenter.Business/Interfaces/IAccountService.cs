@@ -1,4 +1,4 @@
-﻿using EnglisCenter.Accessor.Entities;
+﻿using EnglishCenter.Accessor.Entities;
 using EnglishCenter.Common.Models.Account;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,5 +18,7 @@ namespace EnglishCenter.Business.Interfaces
         Task<bool> ForgetPassWord(string email);
 
         Task<bool> ChangePassword(int id,AccountChangePassword account);
+
+        Task<IEnumerable<Account>> GetAccountByCourse(int id);
     }
 }

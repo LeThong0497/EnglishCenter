@@ -1,4 +1,4 @@
-﻿using EnglisCenter.Accessor.Entities;
+﻿using EnglishCenter.Accessor.Entities;
 using EnglishCenter.Common.Models.Course;
 using System.Collections.Generic;
 using System.Threading.Tasks;

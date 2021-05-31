@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace EnglisCenter.Accessor.Entities
+namespace EnglishCenter.Accessor.Entities
 {
     public class Test
     {

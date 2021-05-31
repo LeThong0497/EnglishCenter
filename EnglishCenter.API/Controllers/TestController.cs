@@ -1,4 +1,4 @@
-﻿using EnglisCenter.Accessor.Entities;
+﻿using EnglishCenter.Accessor.Entities;
 using EnglishCenter.Business.Interfaces;
 using EnglishCenter.Common.Models.Result;
 using EnglishCenter.Common.Models.Test;
@@ -121,6 +121,28 @@ namespace EnglisCenter.API.Controllers
                 return Content("NotDone");
             else
                 return Content("Done");
+        }
+
+        [HttpGet("state/change")]
+        public async Task<ActionResult> ChangeState()
+        {
+            var result = await _testService.ChangeState();
+
+            if (result)
+                return Ok("Success");
+            else
+                return BadRequest("Fail");
+        }
+
+        [HttpGet("admin/closed/{id}")]
+        public async Task<ActionResult<Test>> CloseTest([FromRoute] int id)
+        {
+            var result = await _testService.CloseTest(id);
+
+            if (result != null)
+                return Ok("Success");
+            else
+                return BadRequest("Fail");
         }
     }
 }

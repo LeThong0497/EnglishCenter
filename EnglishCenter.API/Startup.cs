@@ -57,7 +57,7 @@ namespace EnglishCenter.API
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAnyOrigin", builder => builder
-                    .WithOrigins(Configuration["UrlAdmin"])
+                    .WithOrigins(Configuration["UrlClient"],Configuration["UrlAdmin"])
                     .AllowCredentials()
                     .AllowAnyMethod()
                     .AllowAnyHeader());

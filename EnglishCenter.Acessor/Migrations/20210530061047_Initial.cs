@@ -23,6 +23,22 @@ namespace EnglishCenter.Accessor.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MailBoxes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MailBoxes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Questions",
                 columns: table => new
                 {
@@ -173,7 +189,9 @@ namespace EnglishCenter.Accessor.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ResultId = table.Column<int>(type: "int", nullable: false),
-                    SelectedAns = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    QuestionId = table.Column<int>(type: "int", nullable: false),
+                    SelectedAns = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Ok = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -231,6 +249,9 @@ namespace EnglishCenter.Accessor.Migrations
         {
             migrationBuilder.DropTable(
                 name: "DetailResults");
+
+            migrationBuilder.DropTable(
+                name: "MailBoxes");
 
             migrationBuilder.DropTable(
                 name: "TestDetails");

@@ -1,4 +1,4 @@
-﻿using EnglisCenter.Accessor.Entities;
+﻿using EnglishCenter.Accessor.Entities;
 using EnglishCenter.Business.Interfaces;
 using EnglishCenter.Common.Models.Question;
 using EnglishCenter.Common.Models.Result;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace EnglishCenter.Business.Services
 {
-    public class TestService :ITestService
+    public class TestService : ITestService
     {
         private readonly IBaseRepository<Test> _baseRepository;
         private readonly IQuestionService _questionService;
@@ -276,8 +276,8 @@ namespace EnglishCenter.Business.Services
             {
                 throw new Exception("Can not find this test!");
             }
-               
-                
+
+
             var result = new Result
             {
                 AccountId = resultRequest.AccountId,
@@ -295,8 +295,8 @@ namespace EnglishCenter.Business.Services
                 {
                     ResultId = resultNew.ResultId,
                     SelectedAns = resultRequest.Answers[i].Answer,
-                    QuestionId= resultRequest.Answers[i].QuestionId,
-                    Ok= resultRequest.Answers[i].Ok
+                    QuestionId = resultRequest.Answers[i].QuestionId,
+                    Ok = resultRequest.Answers[i].Ok
                 };
                 list.Add(detailResult);
             }
@@ -357,6 +357,40 @@ namespace EnglishCenter.Business.Services
             }
 
             return listDetailTests;
-        }       
+        }
+
+        public async Task<bool> ChangeState()
+        {
+            var tests = await _baseRepository.Entities
+                                    .Where(x =>x.DateTest.AddMinutes(10) < DateTime.Now)
+                                    .ToListAsync();
+
+            var x = (await _baseRepository.GetById(17)).DateTest.AddMinutes(10);
+            var y = DateTime.Now;
+           var r = x < y;
+            if (tests == null)
+                return false;
+
+            foreach (Test t in tests)
+            {
+                t.State = false;
+                await _baseRepository.Update(t);
+            }
+
+            return true;
+        }
+
+        public async Task<Test> CloseTest(int id)
+        {
+            var test = await _baseRepository.GetById(id);
+                                    
+            if (test == null)
+                throw new Exception("NotFound") ;
+
+                test.State = false;
+                await _baseRepository.Update(test);
+            
+            return test;
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using EnglisCenter.Accessor.Entities;
+﻿using EnglishCenter.Accessor.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace EnglisCenter.Accessor
@@ -17,5 +17,6 @@ namespace EnglisCenter.Accessor
             public DbSet<Account> Accounts { get; set; }
             public DbSet<Result> Results { get; set; }
             public DbSet<DetailResult> DetailResults { get; set; }
-        }
+            public DbSet<MailBox> MailBoxes { get; set; }
+    }
 }

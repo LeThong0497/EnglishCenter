@@ -1,4 +1,4 @@
-﻿using EnglisCenter.Accessor.Entities;
+﻿using EnglishCenter.Accessor.Entities;
 using EnglishCenter.Business.Interfaces;
 using EnglishCenter.Common.Models.Result;
 using EnglishCenter.Common.Models.ResultDetail;
@@ -22,7 +22,7 @@ namespace EnglishCenter.Business.Services
             return  await  _baseRepository.Add(result);
         }
 
-        public async Task<IEnumerable<ResultResponse>> GetResult(int accId)
+        public async Task<IEnumerable<ResultDetailResponse>> GetResultByAccount(int accId)
         {
             var results =await _baseRepository.Entities
                                       .Include(x => x.DetailResults)
@@ -32,7 +32,7 @@ namespace EnglishCenter.Business.Services
             if (results == null)
                 return null;
 
-           var resultDetails= results.Select(x => new ResultResponse
+           var resultDetails= results.Select(x => new ResultDetailResponse
             {
                 TestId = x.TestId,
                 Score = x.Score,
@@ -47,6 +47,28 @@ namespace EnglishCenter.Business.Services
             });
 
             return resultDetails;
+        }
+
+        public async Task<IEnumerable<ResultResponse>> GetResultByTest(int id)
+        {
+            var results = await _baseRepository.Entities
+                                      .Include(x => x.Account)
+                                      .Include(x => x.Test)
+                                      .Where(x => x.TestId.Equals(id))
+                                      .Select(x => new ResultResponse
+                                      {
+                                          FullName = x.Account.FullName,
+                                          TestId=x.TestId,
+                                          TestName=x.Test.TestName,
+                                          Score=x.Score,
+                                          Date=x.Date
+                                      })
+                                      .ToListAsync();
+
+            if (results == null)
+                return null;
+            
+            return results;
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace EnglisCenter.Accessor.Entities
+namespace EnglishCenter.Accessor.Entities
 {
     public class Result
     {
@@ -12,8 +12,9 @@ namespace EnglisCenter.Accessor.Entities
         public int TestId { get; set; }
         public int Score { get; set; }
         public DateTime Date { get; set; }
-
         public virtual IList<DetailResult> DetailResults { get; set; }
+        public virtual Account Account { get; set; }
+        public virtual Test Test { get; set; }
     }
 }
 

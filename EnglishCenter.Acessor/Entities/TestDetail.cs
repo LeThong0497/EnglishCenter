@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EnglisCenter.Accessor.Entities
+namespace EnglishCenter.Accessor.Entities
 {
     public class TestDetail
     {

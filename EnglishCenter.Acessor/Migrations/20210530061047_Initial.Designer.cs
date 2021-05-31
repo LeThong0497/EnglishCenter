@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EnglishCenter.Accessor.Migrations
 {
     [DbContext(typeof(EnglishForStudentDB))]
-    [Migration("20210523163738_Initial2")]
-    partial class Initial2
+    [Migration("20210530061047_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace EnglishCenter.Accessor.Migrations
                 .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("EnglisCenter.Accessor.Entities.Account", b =>
+            modelBuilder.Entity("EnglishCenter.Accessor.Entities.Account", b =>
                 {
                     b.Property<int>("AccountId")
                         .ValueGeneratedOnAdd()
@@ -64,7 +64,7 @@ namespace EnglishCenter.Accessor.Migrations
                     b.ToTable("Accounts");
                 });
 
-            modelBuilder.Entity("EnglisCenter.Accessor.Entities.Course", b =>
+            modelBuilder.Entity("EnglishCenter.Accessor.Entities.Course", b =>
                 {
                     b.Property<int>("CourseId")
                         .ValueGeneratedOnAdd()
@@ -85,7 +85,7 @@ namespace EnglishCenter.Accessor.Migrations
                     b.ToTable("Courses");
                 });
 
-            modelBuilder.Entity("EnglisCenter.Accessor.Entities.DetailResult", b =>
+            modelBuilder.Entity("EnglishCenter.Accessor.Entities.DetailResult", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -111,7 +111,31 @@ namespace EnglishCenter.Accessor.Migrations
                     b.ToTable("DetailResults");
                 });
 
-            modelBuilder.Entity("EnglisCenter.Accessor.Entities.Question", b =>
+            modelBuilder.Entity("EnglishCenter.Accessor.Entities.MailBox", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MailBoxes");
+                });
+
+            modelBuilder.Entity("EnglishCenter.Accessor.Entities.Question", b =>
                 {
                     b.Property<int>("QuestionId")
                         .ValueGeneratedOnAdd()
@@ -141,7 +165,7 @@ namespace EnglishCenter.Accessor.Migrations
                     b.ToTable("Questions");
                 });
 
-            modelBuilder.Entity("EnglisCenter.Accessor.Entities.Result", b =>
+            modelBuilder.Entity("EnglishCenter.Accessor.Entities.Result", b =>
                 {
                     b.Property<int>("ResultId")
                         .ValueGeneratedOnAdd()
@@ -169,7 +193,7 @@ namespace EnglishCenter.Accessor.Migrations
                     b.ToTable("Results");
                 });
 
-            modelBuilder.Entity("EnglisCenter.Accessor.Entities.Role", b =>
+            modelBuilder.Entity("EnglishCenter.Accessor.Entities.Role", b =>
                 {
                     b.Property<int>("RoleId")
                         .ValueGeneratedOnAdd()
@@ -184,7 +208,7 @@ namespace EnglishCenter.Accessor.Migrations
                     b.ToTable("Role");
                 });
 
-            modelBuilder.Entity("EnglisCenter.Accessor.Entities.Test", b =>
+            modelBuilder.Entity("EnglishCenter.Accessor.Entities.Test", b =>
                 {
                     b.Property<int>("TestId")
                         .ValueGeneratedOnAdd()
@@ -223,7 +247,7 @@ namespace EnglishCenter.Accessor.Migrations
                     b.ToTable("Tests");
                 });
 
-            modelBuilder.Entity("EnglisCenter.Accessor.Entities.TestDetail", b =>
+            modelBuilder.Entity("EnglishCenter.Accessor.Entities.TestDetail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -245,15 +269,15 @@ namespace EnglishCenter.Accessor.Migrations
                     b.ToTable("TestDetails");
                 });
 
-            modelBuilder.Entity("EnglisCenter.Accessor.Entities.Account", b =>
+            modelBuilder.Entity("EnglishCenter.Accessor.Entities.Account", b =>
                 {
-                    b.HasOne("EnglisCenter.Accessor.Entities.Course", "Course")
+                    b.HasOne("EnglishCenter.Accessor.Entities.Course", "Course")
                         .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EnglisCenter.Accessor.Entities.Role", "Role")
+                    b.HasOne("EnglishCenter.Accessor.Entities.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -264,48 +288,52 @@ namespace EnglishCenter.Accessor.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("EnglisCenter.Accessor.Entities.DetailResult", b =>
+            modelBuilder.Entity("EnglishCenter.Accessor.Entities.DetailResult", b =>
                 {
-                    b.HasOne("EnglisCenter.Accessor.Entities.Result", null)
+                    b.HasOne("EnglishCenter.Accessor.Entities.Result", null)
                         .WithMany("DetailResults")
                         .HasForeignKey("ResultId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("EnglisCenter.Accessor.Entities.Result", b =>
+            modelBuilder.Entity("EnglishCenter.Accessor.Entities.Result", b =>
                 {
-                    b.HasOne("EnglisCenter.Accessor.Entities.Account", null)
+                    b.HasOne("EnglishCenter.Accessor.Entities.Account", "Account")
                         .WithMany("Results")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EnglisCenter.Accessor.Entities.Test", null)
+                    b.HasOne("EnglishCenter.Accessor.Entities.Test", "Test")
                         .WithMany("Results")
                         .HasForeignKey("TestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Test");
                 });
 
-            modelBuilder.Entity("EnglisCenter.Accessor.Entities.Test", b =>
+            modelBuilder.Entity("EnglishCenter.Accessor.Entities.Test", b =>
                 {
-                    b.HasOne("EnglisCenter.Accessor.Entities.Course", null)
+                    b.HasOne("EnglishCenter.Accessor.Entities.Course", null)
                         .WithMany("Tests")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("EnglisCenter.Accessor.Entities.TestDetail", b =>
+            modelBuilder.Entity("EnglishCenter.Accessor.Entities.TestDetail", b =>
                 {
-                    b.HasOne("EnglisCenter.Accessor.Entities.Question", "Question")
+                    b.HasOne("EnglishCenter.Accessor.Entities.Question", "Question")
                         .WithMany()
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EnglisCenter.Accessor.Entities.Test", null)
+                    b.HasOne("EnglishCenter.Accessor.Entities.Test", null)
                         .WithMany("TestDetails")
                         .HasForeignKey("TestId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -314,22 +342,22 @@ namespace EnglishCenter.Accessor.Migrations
                     b.Navigation("Question");
                 });
 
-            modelBuilder.Entity("EnglisCenter.Accessor.Entities.Account", b =>
+            modelBuilder.Entity("EnglishCenter.Accessor.Entities.Account", b =>
                 {
                     b.Navigation("Results");
                 });
 
-            modelBuilder.Entity("EnglisCenter.Accessor.Entities.Course", b =>
+            modelBuilder.Entity("EnglishCenter.Accessor.Entities.Course", b =>
                 {
                     b.Navigation("Tests");
                 });
 
-            modelBuilder.Entity("EnglisCenter.Accessor.Entities.Result", b =>
+            modelBuilder.Entity("EnglishCenter.Accessor.Entities.Result", b =>
                 {
                     b.Navigation("DetailResults");
                 });
 
-            modelBuilder.Entity("EnglisCenter.Accessor.Entities.Test", b =>
+            modelBuilder.Entity("EnglishCenter.Accessor.Entities.Test", b =>
                 {
                     b.Navigation("Results");
 

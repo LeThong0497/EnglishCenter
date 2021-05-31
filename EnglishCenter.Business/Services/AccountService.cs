@@ -1,4 +1,4 @@
-﻿using EnglisCenter.Accessor.Entities;
+﻿using EnglishCenter.Accessor.Entities;
 using EnglishCenter.Business.Interfaces;
 using EnglishCenter.Common.Models.Account;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +25,7 @@ namespace EnglishCenter.Business.Services
 
             if (ac != null)
             {
-                throw new Exception("This email is exist");
+                throw new Exception("Exist");
             }
 
             //Tạo mật khẩu ngẫu nhiên
@@ -51,8 +51,8 @@ namespace EnglishCenter.Business.Services
                 Timeout = 5000,
             };
             MailMessage msg = new MailMessage("thongle0497@gmail.com", accountRequest.Email.ToString().Trim(),
-                "Trung tâm AL - Cấp mật khẩu",
-                "Cảm ơn đã đăng ký thi tại trung tâm AL. Mật khẩu của bạn là: " + passWord + "\nChú ý: tên đăng nhập chính là email của bạn.\n Chúc bạn đạt kết quả tốt!");
+                "Trung tâm Anh Ngữ MEEC - Cấp mật khẩu",
+                "Cảm ơn đã đăng ký thi tại trung tâm MEEC. Mật khẩu của bạn là: " + passWord + "\n Chú ý: tên đăng nhập chính là email của bạn.\n Chúc bạn đạt kết quả tốt!");
             msg.IsBodyHtml = true;
 
             try
@@ -130,8 +130,8 @@ namespace EnglishCenter.Business.Services
                 Timeout = 5000,
             };
             MailMessage msg = new MailMessage("thongle0497@gmail.com", acc.Email.ToString().Trim(),
-                "Trung tâm AL - Cấp mật khẩu",
-                "Mật khẩu của bạn là: " + acc.PassWord.ToString() + "\n Chúc bạn đạt kết quả tốt!");
+                "Trung tâm Anh Ngữ MEEC - Cấp lại mật khẩu",
+                "Mật khẩu cũ của bạn là: " + acc.PassWord.ToString() + "\n Chúc bạn đạt kết quả tốt!");
             msg.IsBodyHtml = true;
 
             try
@@ -163,6 +163,16 @@ namespace EnglishCenter.Business.Services
             await  _baseRepository.Update(acc);
 
             return true;
+        }
+
+        public async Task<IEnumerable<Account>> GetAccountByCourse(int id)
+        {
+            var accounts =await _baseRepository.Entities.Where(x => x.CourseId.Equals(id)).ToListAsync();
+
+            if (accounts == null)
+                return null;
+
+            return accounts;
         }
     }
 }
