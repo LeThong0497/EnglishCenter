@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnglishCenter.Common", "Eng
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnglishCenter.API", "EnglishCenter.API\EnglishCenter.API.csproj", "{9E7DD837-A76A-4499-8DE5-C464DDA73B57}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnglishCenter.UnitTesting", "EnglishCenter.UnitTesting\EnglishCenter.UnitTesting.csproj", "{5C69D599-C81D-48F6-9EA2-196A04BC84B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{9E7DD837-A76A-4499-8DE5-C464DDA73B57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E7DD837-A76A-4499-8DE5-C464DDA73B57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E7DD837-A76A-4499-8DE5-C464DDA73B57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C69D599-C81D-48F6-9EA2-196A04BC84B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C69D599-C81D-48F6-9EA2-196A04BC84B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C69D599-C81D-48F6-9EA2-196A04BC84B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C69D599-C81D-48F6-9EA2-196A04BC84B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
