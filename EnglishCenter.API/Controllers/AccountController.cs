@@ -2,7 +2,6 @@
 using EnglishCenter.Business.Interfaces;
 using EnglishCenter.Common.Models.Account;
 using EnglishCenter.Common.Models.User;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -23,7 +22,7 @@ namespace EnglisCenter.API.Controllers
             _jwtAuthenticationManage = jwtAuthenticationManage;
         }
 
-        [HttpPost()]
+        [HttpPost]
         public async Task<ActionResult<Account>> SignUp(AccountRequest account)
         {
             try
@@ -37,21 +36,35 @@ namespace EnglisCenter.API.Controllers
             return Content("Success");
         }
 
-       /* [HttpPost("authenticate")]
-        public async Task<IActionResult> Login([FromBody] UserLogin userLogin)
+        [HttpPost("admin/add")]
+        public async Task<ActionResult<Account>> AddAcount(AccountRequestByAd account)
         {
-            if(!(await _accountService.GetAll()).Any(x=>x.Email.Equals(userLogin.Email) && x.PassWord.Equals(userLogin.PassWord)))
+            try
             {
-                throw new Exception("Email or PassWord is incorrect");
+                await _accountService.AddAcount(account);
             }
+            catch (Exception e)
+            {
+                return Content(e.Message);
+            }
+            return Content("Success");
+        }
+        
+        /* [HttpPost("authenticate")]
+         public async Task<IActionResult> Login([FromBody] UserLogin userLogin)
+         {
+             if(!(await _accountService.GetAll()).Any(x=>x.Email.Equals(userLogin.Email) && x.PassWord.Equals(userLogin.PassWord)))
+             {
+                 throw new Exception("Email or PassWord is incorrect");
+             }
 
-            var acc = (await _accountService.GetAll()).Where(x => x.Email.Equals(userLogin.Email))
-                .FirstOrDefault();
-            var token = _jwtAuthenticationManage.Authenticate(userLogin.Email, userLogin.PassWord);
-            if (token == null)
-                return Unauthorized();
-            return Ok(token);
-        }*/
+             var acc = (await _accountService.GetAll()).Where(x => x.Email.Equals(userLogin.Email))
+                 .FirstOrDefault();
+             var token = _jwtAuthenticationManage.Authenticate(userLogin.Email, userLogin.PassWord);
+             if (token == null)
+                 return Unauthorized();
+             return Ok(token);
+         }*/
 
         [HttpPost("login")]
         
@@ -128,6 +141,17 @@ namespace EnglisCenter.API.Controllers
                 return StatusCode(404);
 
             return Ok(list);
+        }
+
+        [HttpGet("active/{id}")]
+        public async Task<ActionResult<Account>> ActiveAccount([FromRoute] int id)
+        {
+            var ac = await _accountService.ActiveAccout(id);
+
+            if (ac == null)
+                return StatusCode(404);
+
+            return Ok(ac);
         }
     }
 }

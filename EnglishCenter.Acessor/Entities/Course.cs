@@ -15,5 +15,7 @@ namespace EnglishCenter.Accessor.Entities
         public string Description { get; set; }
 
         public virtual ICollection<Test> Tests { get; set; }
+
+        public virtual ICollection<TimeTable> TimeTables { get; set; }
     }
 }

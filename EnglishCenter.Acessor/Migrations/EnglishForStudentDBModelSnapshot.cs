@@ -53,6 +53,9 @@ namespace EnglishCenter.Accessor.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("State")
+                        .HasColumnType("bit");
+
                     b.HasKey("AccountId");
 
                     b.HasIndex("CourseId");
@@ -270,6 +273,43 @@ namespace EnglishCenter.Accessor.Migrations
                     b.ToTable("TestDetails");
                 });
 
+            modelBuilder.Entity("EnglishCenter.Accessor.Entities.TimeTable", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Date")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateStart")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("IdZoom")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PassZoom")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Time")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("TimeTables");
+                });
+
             modelBuilder.Entity("EnglishCenter.Accessor.Entities.Account", b =>
                 {
                     b.HasOne("EnglishCenter.Accessor.Entities.Course", "Course")
@@ -343,6 +383,23 @@ namespace EnglishCenter.Accessor.Migrations
                     b.Navigation("Question");
                 });
 
+            modelBuilder.Entity("EnglishCenter.Accessor.Entities.TimeTable", b =>
+                {
+                    b.HasOne("EnglishCenter.Accessor.Entities.Account", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EnglishCenter.Accessor.Entities.Course", null)
+                        .WithMany("TimeTables")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+                });
+
             modelBuilder.Entity("EnglishCenter.Accessor.Entities.Account", b =>
                 {
                     b.Navigation("Results");
@@ -351,6 +408,8 @@ namespace EnglishCenter.Accessor.Migrations
             modelBuilder.Entity("EnglishCenter.Accessor.Entities.Course", b =>
                 {
                     b.Navigation("Tests");
+
+                    b.Navigation("TimeTables");
                 });
 
             modelBuilder.Entity("EnglishCenter.Accessor.Entities.Result", b =>

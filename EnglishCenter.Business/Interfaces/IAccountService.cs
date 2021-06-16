@@ -9,6 +9,8 @@ namespace EnglishCenter.Business.Interfaces
     {
         Task<Account> Add(AccountRequest accountRequest);
 
+        Task<Account> AddAcount(AccountRequestByAd accountRequest);
+
         Task<Account> GetById(int id);
 
         Task<IEnumerable<Account>> GetAll();
@@ -20,5 +22,8 @@ namespace EnglishCenter.Business.Interfaces
         Task<bool> ChangePassword(int id,AccountChangePassword account);
 
         Task<IEnumerable<Account>> GetAccountByCourse(int id);
+
+        Task<Account> ActiveAccout(int id);
+
     }
 }

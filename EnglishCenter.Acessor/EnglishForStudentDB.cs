@@ -18,5 +18,6 @@ namespace EnglisCenter.Accessor
             public DbSet<Result> Results { get; set; }
             public DbSet<DetailResult> DetailResults { get; set; }
             public DbSet<MailBox> MailBoxes { get; set; }
+            public DbSet<TimeTable> TimeTables { get; set; }
     }
 }

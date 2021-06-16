@@ -31,7 +31,8 @@ namespace EnglishCenter.Accessor.Migrations
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -103,6 +104,7 @@ namespace EnglishCenter.Accessor.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PassWord = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    State = table.Column<bool>(type: "bit", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PhoneNumber = table.Column<int>(type: "int", nullable: false),
@@ -183,6 +185,37 @@ namespace EnglishCenter.Accessor.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TimeTables",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CourseId = table.Column<int>(type: "int", nullable: false),
+                    IdZoom = table.Column<int>(type: "int", nullable: false),
+                    PassZoom = table.Column<int>(type: "int", nullable: false),
+                    Date = table.Column<int>(type: "int", nullable: false),
+                    Time = table.Column<int>(type: "int", nullable: false),
+                    AccountId = table.Column<int>(type: "int", nullable: false),
+                    DateStart = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TimeTables", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TimeTables_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Accounts",
+                        principalColumn: "AccountId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TimeTables_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "CourseId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DetailResults",
                 columns: table => new
                 {
@@ -243,6 +276,16 @@ namespace EnglishCenter.Accessor.Migrations
                 name: "IX_Tests_CourseId",
                 table: "Tests",
                 column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TimeTables_AccountId",
+                table: "TimeTables",
+                column: "AccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TimeTables_CourseId",
+                table: "TimeTables",
+                column: "CourseId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -255,6 +298,9 @@ namespace EnglishCenter.Accessor.Migrations
 
             migrationBuilder.DropTable(
                 name: "TestDetails");
+
+            migrationBuilder.DropTable(
+                name: "TimeTables");
 
             migrationBuilder.DropTable(
                 name: "Results");

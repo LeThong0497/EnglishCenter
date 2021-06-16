@@ -51,8 +51,9 @@ namespace EnglishCenter.Business.Services
                 Timeout = 5000,
             };
             MailMessage msg = new MailMessage("thongle0497@gmail.com", accountRequest.Email.ToString().Trim(),
-                "Trung tâm Anh Ngữ MEEC - Cấp mật khẩu",
-                "Cảm ơn đã đăng ký thi tại trung tâm MEEC. Mật khẩu của bạn là: " + passWord + "\n Chú ý: tên đăng nhập chính là email của bạn.\n Chúc bạn đạt kết quả tốt!");
+                "Trung tâm Anh Ngữ MEEC",
+                "Cảm ơn đã đăng ký học tại trung tâm MEEC. " +
+                "\n Tài khoản của bạn sẽ được kích hoạt sau khi thanh toán học phí thành công! ");
             msg.IsBodyHtml = true;
 
             try
@@ -63,7 +64,7 @@ namespace EnglishCenter.Business.Services
             {
                 throw new Exception("Error"+e);
             }
-            
+
 
             //Update mật khẩu vào db          
             var acc = new Account
@@ -73,6 +74,62 @@ namespace EnglishCenter.Business.Services
                 CourseId = accountRequest.CourseId,
                 PassWord = passWord,
                 RoleId = 2,
+                State = false
+            };
+
+            return await _baseRepository.Add(acc);
+        }
+
+        // Add account by admin
+        public async Task<Account> AddAcount(AccountRequestByAd accountRequest)
+        {
+            var ac = _baseRepository.Entities.Where(x => x.Email == accountRequest.Email).FirstOrDefault();
+
+            if (ac != null)
+            {
+                throw new Exception("Exist");
+            }
+           
+            //Gửi mail mật khẩu
+            SmtpClient smtp = new SmtpClient
+            {
+                UseDefaultCredentials = false,
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                Credentials = new System.Net.NetworkCredential("thongle0497@gmail.com", "lethongLT@0497#!"),
+                Timeout = 5000,
+            };
+            MailMessage msg = new MailMessage("thongle0497@gmail.com", accountRequest.Email.ToString().Trim(),
+                "Trung tâm Anh Ngữ MEEC - Cấp mật khẩu",
+                "Cảm ơn đã đăng ký học tại trung tâm MEEC. " +
+                "\n Mật khẩu đăng nhập của bạn là " + accountRequest.PassWord);
+            msg.IsBodyHtml = true;
+
+            try
+            {
+                smtp.Send(msg);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error" + e);
+            }
+
+
+            //Update mật khẩu vào db          
+            var acc = new Account
+            {
+                FullName = accountRequest.FullName,
+                Email = accountRequest.Email,
+                CourseId = accountRequest.CourseId,
+                PassWord = accountRequest.PassWord,
+                RoleId = accountRequest.RoleId,
+                State = true,
+                DateOfBirth = accountRequest.DateOfBirth,
+                Gender = accountRequest.Gender,
+                Address = accountRequest.Address,
+                PhoneNumber = accountRequest.PhoneNumber,
             };
 
             return await _baseRepository.Add(acc);
@@ -173,6 +230,42 @@ namespace EnglishCenter.Business.Services
                 return null;
 
             return accounts;
+        }
+
+        public async Task<Account> ActiveAccout(int id)
+        {
+            var acc = await _baseRepository.Entities.Where(x => x.AccountId.Equals(id)).FirstOrDefaultAsync();
+
+            if (acc == null)
+                throw new Exception("Not Found");
+
+            SmtpClient smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                Credentials = new System.Net.NetworkCredential("thongle0497@gmail.com", "lethongLT@0497#!"),
+                Timeout = 5000,
+            };
+            MailMessage msg = new MailMessage("thongle0497@gmail.com", acc.Email.ToString().Trim(),
+                "Trung tâm Anh Ngữ MEEC - Cấp mật khẩu",
+                "Mật khẩu của bạn là: " + acc.PassWord.ToString() + "\n Chúc bạn đạt kết quả tốt!");
+            msg.IsBodyHtml = true;
+
+            try
+            {
+                smtp.Send(msg);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error" + e);
+            }
+
+            acc.State = true;
+            await _baseRepository.Update(acc);
+
+            return acc;
         }
     }
 }

@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
-namespace EnglishCenter.Accessor.Entities
+namespace EnglishCenter.Common.Models.Account
 {
-    public class Account
+    public class AccountRequestByAd
     {
-        [Key]
-        public int AccountId { get; set; }
-
         public string Email { get; set; }
 
         public string PassWord { get; set; }
@@ -28,11 +23,5 @@ namespace EnglishCenter.Accessor.Entities
         public int RoleId { get; set; }
 
         public int CourseId { get; set; }
-
-        public virtual Role Role { get; set; }
-
-        public virtual Course Course { get; set; }
-
-        public virtual List<Result> Results { get; set; }
     }
 }

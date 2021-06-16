@@ -362,10 +362,10 @@ namespace EnglishCenter.Business.Services
         public async Task<bool> ChangeState()
         {
             var tests = await _baseRepository.Entities
-                                    .Where(x =>x.DateTest.AddMinutes(10) < DateTime.Now)
+                                    .Where(x =>x.DateTest.AddMinutes(10) < DateTime.Now && x.State==true)
                                     .ToListAsync();
 
-            var x = (await _baseRepository.GetById(17)).DateTest.AddMinutes(10);
+            var x = (await _baseRepository.GetById(52)).DateTest.AddMinutes(10);
             var y = DateTime.Now;
            var r = x < y;
             if (tests == null)

@@ -18,6 +18,7 @@ namespace Backend.Extensions.ServiceCollection
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<ITestService, TestService>();
             services.AddTransient<IMailBoxService, MailBoxService>();
+            services.AddTransient<ITimeTableService, TimeTableService>();
 
         }
     }
